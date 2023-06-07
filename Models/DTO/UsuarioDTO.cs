@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Models.DTO
 {
-    internal class UsuarioDTO
+    public class UsuarioDTO
     {
     }
 }

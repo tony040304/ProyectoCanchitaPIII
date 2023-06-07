@@ -1,6 +1,12 @@
-﻿namespace ProyectoCanchitaPIII.Controllers
+﻿
+
+
+using Microsoft.AspNetCore.Mvc;
+
+namespace ProyectoCanchitaPIII.Controllers
 {
-    public class CanchaController
+    public class CanchaController : ControllerBase
+
     {
     }
 }

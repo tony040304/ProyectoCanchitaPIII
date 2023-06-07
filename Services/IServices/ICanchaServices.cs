@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Services.IServices
 {
-    internal class ICanchaServices
+    public interface ICanchaServices
     {
     }
 }
