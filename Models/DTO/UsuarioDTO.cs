@@ -8,5 +8,21 @@ namespace Models.DTO
 {
     public class UsuarioDTO
     {
+        public int id {  get; set; }
+        public string name { get; set; }
+    }
+
+    public class UsuarioCancha
+    {
+        public string nameCancha { get; set; } = string.Empty;
+        public int hourCancha { get; set; } 
+        
+
+        
+
+        
+
+
+
     }
 }

@@ -8,5 +8,9 @@ namespace Models.DTO
 {
     public class CanchaDTO
     {
+        public int idCancha { get; set; }
+        public string Name { get; set; }
+        public decimal Hour { get; set; }
+        public decimal Price { get; set; }
     }
 }

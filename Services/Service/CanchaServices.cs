@@ -1,4 +1,4 @@
-﻿using Services.IServices;
+using Services.IServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,5 +9,6 @@ namespace Services.Service
 {
     public class CanchaServices : ICanchaServices
     {
+        private readonly CanchaServices _serviceProvider;
     }
 }
