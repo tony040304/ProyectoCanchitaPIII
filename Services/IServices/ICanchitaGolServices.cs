@@ -9,6 +9,6 @@ namespace Services.IServices
 {
     public interface ICanchitaGolServices
     {
-        List<CanchaDTO> GetListPitch();
+        List<PitchDTO> GetListPitch();
     }
 }

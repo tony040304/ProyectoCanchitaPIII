@@ -6,8 +6,8 @@ using Services.Service;
 
 namespace ProyectoCanchitaPIII.Controllers
 {
-    [Route("ProyectoCanchitaPIII/[Controller]")]
-    [ProyectoCanchitaPIIIControllers]
+    [Route("api/[Controller]")]
+    [ApiController]
     public class CanchaController : ControllerBase
 
     {
@@ -18,9 +18,9 @@ namespace ProyectoCanchitaPIII.Controllers
             _service = Services;
         }
 
-        [HttpGet("GetListadoCancha")]
+        [HttpGet("GetListPitch")]
 
-        public ActionResult<List<CanchaDTO>> GetListadoCancha()
+        public ActionResult<List<PitchDTO>> GetListPitch()
         {
             var response = _service.GetListPitch();
             return Ok(response);

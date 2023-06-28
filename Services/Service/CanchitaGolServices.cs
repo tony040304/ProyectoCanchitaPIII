@@ -18,18 +18,17 @@ namespace Services.Service
         {
             this._context = _context;
         }
-        public List<CanchaDTO> GetListPitch()
+        public List<PitchDTO> GetListPitch()
         {
             var cancha = _context.Pitch.ToList();
-            var canchaResponse = new List<CanchaDTO>();
+            var canchaResponse = new List<PitchDTO>();
 
             foreach(var c in cancha)
             {
-                canchaResponse.Add(new CanchaDTO()
+                canchaResponse.Add(new PitchDTO()
                 {
-                    Name = c.Owner,
-                    
-                    
+                    IdPitch = c.IdPitch,
+                    Owner = c.Owner
                 });
             }
             return canchaResponse;
