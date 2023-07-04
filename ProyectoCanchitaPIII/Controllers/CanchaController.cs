@@ -26,5 +26,21 @@ namespace ProyectoCanchitaPIII.Controllers
             return Ok(response);
         }
 
+        [HttpGet("GetListOfUsers")]
+        public ActionResult<List<UserDTO>> GetListOfUsers()
+        {
+            var response = _service.GetListOfUsers();
+
+            return Ok(response);
+        }
+
+        //[HttpGet("GetUserByName/{id}")]
+        //public ActionResult<UserDTO> GetUserByName(int id)
+        //{
+        //    var response = _service.GetUserByName(id);
+
+        //    return Ok(response);
+        //}
+
     }
 }

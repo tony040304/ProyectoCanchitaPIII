@@ -7,10 +7,7 @@ using System.Threading.Tasks;
 
 namespace Services.IServices
 {
-    public interface ICanchaServices
+    public interface IUsersService
     {
-
-        
-        
     }
 }

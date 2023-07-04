@@ -10,5 +10,8 @@ namespace Services.IServices
     public interface ICanchitaGolServices
     {
         List<PitchDTO> GetListPitch();
+        List<UserDTO> GetListOfUsers();
+        //UserDTO GetUserByName(int id);
+
     }
 }

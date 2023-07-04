@@ -11,6 +11,7 @@ namespace Models.MODELS
         {
             Turns = new HashSet<Turns>();
         }
+
         public int IdPitch { get; set; }
         public string Owner { get; set; }
         public string PlaceName { get; set; }
