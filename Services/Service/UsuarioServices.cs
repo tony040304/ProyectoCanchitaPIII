@@ -10,7 +10,5 @@ namespace Services.Service
 {
     public class UsuarioServices : IUsersService
     {
-
-     
-
+    }
 }
