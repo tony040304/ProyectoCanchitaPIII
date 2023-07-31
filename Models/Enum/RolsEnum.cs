@@ -1,15 +1,16 @@
-﻿using Models.DTO;
+﻿using Models.MODELS;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Services.IServices
+namespace Models.Enum
 {
-    public interface ICanchitaGolServices
+    public enum RolsEnum
     {
-        List<PitchDTO> GetListPitch();
-
+        admin = 1,
+        owner = 2,
+        user = 3
     }
 }

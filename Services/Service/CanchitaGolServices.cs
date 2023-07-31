@@ -33,30 +33,6 @@ namespace Services.Service
             }
             return canchaResponse;
         }
-        public List<UserDTO> GetListOfUsers()
-        {
-            var users = _context.Users.ToList();
-            var usersResponse = new List<UserDTO>();
-
-            foreach (var user in users)
-            {
-                usersResponse.Add(new UserDTO()
-                {
-                    Id = user.Id,
-                    Username = user.Username,
-                    Userpassword = user.Userpassword,
-                    Email = user.Email,
-                    Role = user.Role
-                });
-            }
-            return usersResponse;
-        }
-
-        //public UserDTO GetUserByName(int id)
-        //{
-        //    UserDTO user = usersResponse.Where(x => x.Id == id).FirstOrDefault();
-        //    return user;
-        //}
 
     }
 }

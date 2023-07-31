@@ -16,7 +16,7 @@ namespace Models.MODELS
         public string Username { get; set; }
         public string Userpassword { get; set; }
         public string Email { get; set; }
-        public string Role { get; set; }
+        public int Role { get; set; }
 
         public virtual ICollection<Turns> Turns { get; set; }
     }

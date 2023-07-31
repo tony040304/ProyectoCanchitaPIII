@@ -20,11 +20,7 @@ namespace Models.MODELS.Configurations
                 .IsUnicode(false)
                 .HasColumnName("email");
 
-            entity.Property(e => e.Role)
-                .IsRequired()
-                .HasMaxLength(1)
-                .IsUnicode(false)
-                .HasColumnName("role");
+            entity.Property(e => e.Role).HasColumnName("role");
 
             entity.Property(e => e.Username)
                 .IsRequired()
