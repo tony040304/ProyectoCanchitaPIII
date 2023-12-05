@@ -1,4 +1,5 @@
-﻿using Models.ViewModel;
+﻿using Models.DTO;
+using Models.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace Services.IServices
 {
     public interface IAuthenticate
     {
-        string CreatUser(UserViewModel User);
+        string CreatUser(UserDTO User);
         string Login(AuthenticateViewModel User);
 
     }

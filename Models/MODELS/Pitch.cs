@@ -15,7 +15,9 @@ namespace Models.MODELS
         public int IdPitch { get; set; }
         public string Owner { get; set; }
         public string PlaceName { get; set; }
+        public int? IdUsuario { get; set; }
 
+        public virtual Users IdUsuarioNavigation { get; set; }
         public virtual ICollection<Turns> Turns { get; set; }
     }
 }

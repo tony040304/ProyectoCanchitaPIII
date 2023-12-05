@@ -1,9 +1,10 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Models.DTO;
 using Models.Helper;
 using Models.MODELS;
 using Models.ViewModel;
-using Services.Helper;
 using Services.IServices;
 using System;
 using System.Collections.Generic;
@@ -18,34 +19,33 @@ namespace Services.Service
     public class AuthenticateServices : IAuthenticate
     {
         private readonly CANCHITASGOLContext _context;
-        private readonly AppSetings _appSetings;
+        private readonly IConfiguration _appSetings;
 
-        public AuthenticateServices(CANCHITASGOLContext context, IOptions<AppSetings> appSetting)
+        public AuthenticateServices(CANCHITASGOLContext context, IConfiguration appSetting)
         {
             _context = context;
-            _appSetings = appSetting.Value;
+            _appSetings = appSetting;
         }   
 
-        public string CreatUser(UserViewModel User)
+        public string CreatUser(UserDTO User)
         {
-            if (string.IsNullOrEmpty(User.UserName))
+            if (string.IsNullOrEmpty(User.Username))
             {
                 return "Ingrese usuario";
             }
 
-            Users? user = _context.Users.FirstOrDefault(x => x.Username == User.UserName);
-            if (user == null)
+            Users? user = _context.Users.FirstOrDefault(x => x.Username == User.Username);
+            if (user != null)
             {
                 return "Usuario existente";
             }
 
             _context.Users.Add(new Users()
             {
-                Username = user.Username,
-                Email = user.Email,
-                Userpassword = user.Userpassword.GetSHA384(),
-                Role = user.Role,
-                
+                Username = User.Username,
+                Email = User.Email,
+                Userpassword = User.Userpassword,
+                Role = User.Role,               
             });
             _context.SaveChanges();
 
@@ -65,22 +65,23 @@ namespace Services.Service
 
         private string GetToken(Users user)
         {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.UTF8.GetBytes(_appSetings.key);
-            var tokenDescription = new SecurityTokenDescriptor()
-            {
-                Subject = new ClaimsIdentity(
-                    new Claim[]
-                    {
-                        new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                        new Claim(ClaimTypes.Name, user.Username),
-                        //new Claim(ClaimTypes.Role, user.Role)
-                    }),
-                Expires = DateTime.UtcNow.AddHours(3),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.Aes128KW)
-            };
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_appSetings["AppSettings:Key"]));
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-            return tokenHandler.WriteToken(tokenHandler.CreateToken(tokenDescription));
+            var claimsForToken = new List<Claim>();
+            claimsForToken.Add(new Claim("sub", user.Username));
+            claimsForToken.Add(new Claim("given_name", user.Username));
+            claimsForToken.Add(new Claim("email", user.Email));
+            claimsForToken.Add(new Claim("role", user.Role.ToString()));
+
+            var Sectoken = new JwtSecurityToken(_appSetings["AppSettings:Issuer"],
+              _appSetings["AppSettings:Issuer"],
+              claimsForToken,
+              expires: DateTime.Now.AddMinutes(120),
+              signingCredentials: credentials);
+
+            var token = new JwtSecurityTokenHandler().WriteToken(Sectoken);
+            return token;
         }
     }
 }

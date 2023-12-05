@@ -26,29 +26,14 @@ namespace Services.Service
 
         }
 
-        public List<UserDTO> GetListUsers()
+        public List<UserDTO> GetListOwners()
         {
-            return _mapper.Map<List<UserDTO>>(_Context.Users.Where(e => e.Role == (int)RolsEnum.user).ToList());
+            return _mapper.Map<List<UserDTO>>(_Context.Users.Where(e => e.Role == (int)RolsEnum.owner).ToList());
         }
 
-        public UserDTO GetUserById(int id)
+        public UserDTO GetOwnerById(int id)
         {
             return _mapper.Map<UserDTO>(_Context.Users.Where(x => x.Id == id).First());
-        }
-
-        public UserDTO CreatUser(UserViewModel user)
-        {
-            _Context.Users.Add(new Users()
-            {
-                Username = user.UserName,
-                Email = user.Email
-                //Role = 3
-            });
-            _Context.SaveChanges();
-
-            var lastUser = _Context.Users.OrderBy(x => x.Id).Last();
-
-            return _mapper.Map<UserDTO>(lastUser);
         }
 
         public void DeleteUser(int id)

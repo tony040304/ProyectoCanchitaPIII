@@ -7,7 +7,8 @@ namespace ProyectoCanchitaPIII
     {
         public static void DependencyInjection(WebApplicationBuilder builder)
         {
-            builder.Services.AddScoped<ICanchitaGolServices, CanchitaGolServices>();
+            builder.Services.AddScoped<IAuthenticate, AuthenticateServices>();
+            builder.Services.AddScoped<ICanchitaServices, CanchitaServices>();
             builder.Services.AddScoped<IUsersService, UsuarioServices>();
         }
     }

@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace Models.DTO
 {
-    public class PitchDTO
+    public class TurnsDTO
     {
+        public int IdTurns { get; set; }
+        public int IdUsers { get; set; }
         public int IdPitch { get; set; }
-        public string Owner { get; set; } = string.Empty;
-        public string PlaceName { get; set; } = string.Empty;
-        public int IdUsuario { get; set; }
+        public DateTime Dia { get; set; }
     }
 }

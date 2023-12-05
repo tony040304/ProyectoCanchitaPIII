@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Models.DTO;
 using Models.ViewModel;
 using Services.IServices;
 
@@ -28,7 +29,7 @@ namespace ProyectoCanchitaPIII.Controllers
                 response = _services.Login(User);
                 if (string.IsNullOrEmpty(response))
                 {
-                    return NotFound("Email o contraseña incorrecta");
+                    return NotFound("username o contraseña incorrecta");
                 }
 
             }
@@ -40,7 +41,7 @@ namespace ProyectoCanchitaPIII.Controllers
             return Ok(response);
         }
         [HttpPost("Sing up")]
-        public ActionResult<string> CreatUser([FromBody] UserViewModel User)
+        public ActionResult<string> CreatUser([FromBody] UserDTO User)
         {
             string response = string.Empty;
             try

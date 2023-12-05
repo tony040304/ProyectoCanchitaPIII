@@ -9,6 +9,7 @@ namespace Models.MODELS
     {
         public Users()
         {
+            Pitch = new HashSet<Pitch>();
             Turns = new HashSet<Turns>();
         }
 
@@ -16,8 +17,9 @@ namespace Models.MODELS
         public string Username { get; set; }
         public string Userpassword { get; set; }
         public string Email { get; set; }
-        public int Role { get; set; }
+        public int? Role { get; set; }
 
+        public virtual ICollection<Pitch> Pitch { get; set; }
         public virtual ICollection<Turns> Turns { get; set; }
     }
 }

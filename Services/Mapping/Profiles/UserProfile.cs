@@ -20,10 +20,10 @@ namespace Services.Mapping.Profiles
             CreateMap<List<Users>, List<UserDTO>>()
                 .ConvertUsing(src => src.Select(e => new UserDTO { Username = e.Username, Id = e.Id }).ToList());
 
-            CreateMap<UserViewModel, Users>();
+            CreateMap<UserDTO, Users>();
 
-            CreateMap<UserViewModel, Users>()
-                .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.UserName));
+            CreateMap<UserDTO, Users>()
+                .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.Username));
         }
     }
 }

@@ -29,8 +29,6 @@ namespace Models.MODELS.Configurations
                 .HasColumnName("username");
 
             entity.Property(e => e.Userpassword)
-                .IsRequired()
-                .HasMaxLength(20)
                 .IsUnicode(false)
                 .HasColumnName("userpassword");
 

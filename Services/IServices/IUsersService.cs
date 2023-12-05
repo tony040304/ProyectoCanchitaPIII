@@ -10,9 +10,8 @@ namespace Services.IServices
 {
     public interface IUsersService
     {
-        List<UserDTO> GetListUsers();
-        UserDTO GetUserById(int id);
-        UserDTO CreatUser(UserViewModel user);
+        List<UserDTO> GetListOwners();
+        UserDTO GetOwnerById(int id);
         void DeleteUser(int id);
     }
 }

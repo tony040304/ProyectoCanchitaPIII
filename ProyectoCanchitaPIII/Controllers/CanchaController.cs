@@ -3,6 +3,7 @@ using Models.DTO;
 using Models.MODELS;
 using Services.IServices;
 using Services.Service;
+using System.Diagnostics.Contracts;
 
 namespace ProyectoCanchitaPIII.Controllers
 {
@@ -11,29 +12,52 @@ namespace ProyectoCanchitaPIII.Controllers
     public class CanchaController : ControllerBase
 
     {
-        private readonly ICanchitaGolServices _service;
+        private readonly ICanchitaServices _service;
 
-        public CanchaController (ICanchitaGolServices Services)
+        public CanchaController (ICanchitaServices Services)
         {
             _service = Services;
         }
-
-        [HttpGet("GetListPitch")]
-
-        public ActionResult<List<PitchDTO>> GetListPitch()
+        [HttpPost("DataPitch")]
+        public ActionResult<string> InsertDataPitch(PitchDTO pitch)
         {
-            var response = _service.GetListPitch();
+            string response = string.Empty;
+            try
+            {
+                response = _service.InsertDataPitch(pitch);
+                if (response == "Cancha existente")
+                    return BadRequest(response);
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"{ex.Message}");
+            }
+
             return Ok(response);
         }
 
 
-        //[HttpGet("GetUserByName/{id}")]
-        //public ActionResult<UserDTO> GetUserByName(int id)
-        //{
-        //    var response = _service.GetUserByName(id);
+        [HttpGet("GetListTurns")]
+        public ActionResult<List<PitchTurnsDTO>> GetTurnsById(int id)
+        {
+            try
+            {
+                var response = _service.GetTurnsById(id);
+                if (response == null)
+                {
+                    NotFound("No hay reservas");
+                }
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
-        //    return Ok(response);
-        //}
+
+        
 
     }
 }

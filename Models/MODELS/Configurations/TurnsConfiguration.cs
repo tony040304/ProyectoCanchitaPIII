@@ -13,7 +13,7 @@ namespace Models.MODELS.Configurations
         public void Configure(EntityTypeBuilder<Turns> entity)
         {
             entity.HasKey(e => new { e.IdTurns, e.IdUsers, e.IdPitch })
-                .HasName("PK__Turns__E07395E57AB182F4");
+                .HasName("PK__Turns__E07395E5FDA32256");
 
             entity.Property(e => e.IdTurns)
                 .ValueGeneratedOnAdd()
@@ -29,13 +29,13 @@ namespace Models.MODELS.Configurations
                 .WithMany(p => p.Turns)
                 .HasForeignKey(d => d.IdPitch)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Turns__Id_PITCH__4222D4EF");
+                .HasConstraintName("FK__Turns__Id_PITCH__3F466844");
 
             entity.HasOne(d => d.IdUsersNavigation)
                 .WithMany(p => p.Turns)
                 .HasForeignKey(d => d.IdUsers)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Turns__Id_USERS__412EB0B6");
+                .HasConstraintName("FK__Turns__Id_USERS__403A8C7D");
 
             OnConfigurePartial(entity);
         }

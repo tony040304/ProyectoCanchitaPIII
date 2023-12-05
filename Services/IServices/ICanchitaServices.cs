@@ -7,9 +7,11 @@ using System.Threading.Tasks;
 
 namespace Services.IServices
 {
-    public interface ICanchitaGolServices
+    public interface ICanchitaServices
     {
-        List<PitchDTO> GetListPitch();
+
+        string InsertDataPitch(PitchDTO pitch);
+        List<PitchTurnsDTO> GetTurnsById(int id);
 
     }
 }

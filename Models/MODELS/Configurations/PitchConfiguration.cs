@@ -13,7 +13,7 @@ namespace Models.MODELS.Configurations
         public void Configure(EntityTypeBuilder<Pitch> entity)
         {
             entity.HasKey(e => e.IdPitch)
-                .HasName("PK__PITCH__6C84D4CA694F1297");
+                .HasName("PK__PITCH__6C84D4CAF8E09512");
 
             entity.ToTable("PITCH");
 
@@ -26,6 +26,11 @@ namespace Models.MODELS.Configurations
                 .IsRequired()
                 .HasMaxLength(20)
                 .IsUnicode(false);
+
+            entity.HasOne(d => d.IdUsuarioNavigation)
+                .WithMany(p => p.Pitch)
+                .HasForeignKey(d => d.IdUsuario)
+                .HasConstraintName("FK_PITCH_USERS");
 
             OnConfigurePartial(entity);
         }

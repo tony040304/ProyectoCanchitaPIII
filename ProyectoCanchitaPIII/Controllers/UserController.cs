@@ -11,19 +11,19 @@ namespace ProyectoCanchitaPIII.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUsersService _usersService;
-        private readonly ILogger<UserController> _logger;
-        public UserController(IUsersService usersService, ILogger<UserController> logger)
+        private readonly IConfiguration _logger;
+        public UserController(IUsersService usersService, IConfiguration logger)
         {
             _usersService = usersService;
             _logger = logger;
         }
 
         [HttpGet("GetListOfUsers")]
-        public ActionResult<List<UserDTO>> GetListUsers()
+        public ActionResult<List<UserDTO>> GetListOwners()
         {
             try
             {
-                var response = _usersService.GetListUsers();
+                var response = _usersService.GetListOwners();
                 if (response == null)
                 {
                     NotFound("No hay usuario");
@@ -36,12 +36,12 @@ namespace ProyectoCanchitaPIII.Controllers
             }
         }
 
-        [HttpGet("GetuserById/{id}")]
-        public ActionResult<UserDTO> GetUserById(int id)
+        [HttpGet("GetOwnerById/{id}")]
+        public ActionResult<UserDTO> GetOwnerById(int id)
         {
             try
             {
-                var response = _usersService.GetUserById(id);
+                var response = _usersService.GetOwnerById(id);
                 if (response == null)
                 {
                     NotFound($"No hay usuario con ese id {id}");
@@ -51,25 +51,6 @@ namespace ProyectoCanchitaPIII.Controllers
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
-            }
-        }
-
-        [HttpPost("CreatUser")]
-        public ActionResult<UserDTO> CreatUser([FromBody] UserViewModel user)
-        {
-            try
-            {
-                var response = _usersService.CreatUser(user);
-
-                string baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.ToUriComponent()}";
-                string apiAndEndpointUrl = $"api/User/GetuserById";
-                string locationUrl = $"{baseUrl}/{apiAndEndpointUrl}/{response.Id}";
-                
-                return Created(locationUrl, response);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest($"{ex.Message}");
             }
         }
 
