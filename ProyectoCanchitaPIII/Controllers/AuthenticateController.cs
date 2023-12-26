@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Models.DTO;
 using Models.ViewModel;
@@ -8,6 +9,7 @@ namespace ProyectoCanchitaPIII.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    
     public class AuthenticateController : ControllerBase
     {
         private readonly IAuthenticate _services;

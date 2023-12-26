@@ -26,21 +26,43 @@ namespace Services.Service
 
         }
 
-        public List<UserDTO> GetListOwners()
+        public List<PitchDTO> GetListPitch()
         {
-            return _mapper.Map<List<UserDTO>>(_Context.Users.Where(e => e.Role == (int)RolsEnum.owner).ToList());
+            return _Context.Users
+            .Where(u => u.Role == 2)
+            .Select(s => new PitchDTO() { Id = s.Id, Email = s.Email, Username = s.Username })
+            .ToList();
         }
 
-        public UserDTO GetOwnerById(int id)
-        {
-            return _mapper.Map<UserDTO>(_Context.Users.Where(x => x.Id == id).First());
-        }
-
+        
         public void DeleteUser(int id)
         {
-            _Context.Users.Remove(_Context.Users.Single(d=>d.Id == id));
+            _Context.Users.Remove(_Context.Users.Single(d => d.Id == id));
             _Context.SaveChanges();
         }
-        
+
+        public string ReserveTurn(TurnsDTO turns)
+        {
+            Turns? turn = _Context.Turns.FirstOrDefault(x => x.Dias == turns.Dias);
+
+            if (turn != null || turns.Dias < DateTime.Now.Date)
+            {
+                return "Turno no disponible";
+            }
+
+            _Context.Turns.Add(new Turns()
+            {
+                Dias = turns.Dias,
+                IdUsers = turns.IdUsers,
+                IdPitch = turns.IdPitch,
+            });
+            _Context.SaveChanges();
+
+            string lastTurn = _Context.Turns.OrderBy(x=>x.IdTurns).Last().ToString();
+            return lastTurn;
+
+        }
+
+
     }
 }

@@ -19,13 +19,11 @@ namespace Models.MODELS
         {
         }
 
-        public virtual DbSet<Pitch> Pitch { get; set; }
         public virtual DbSet<Turns> Turns { get; set; }
         public virtual DbSet<Users> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-        modelBuilder.ApplyConfiguration(new Configurations.PitchConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.TurnsConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.UsersConfiguration());
 

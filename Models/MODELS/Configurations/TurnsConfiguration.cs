@@ -23,16 +23,16 @@ namespace Models.MODELS.Configurations
 
             entity.Property(e => e.IdPitch).HasColumnName("Id_PITCH");
 
-            entity.Property(e => e.Dia).HasColumnType("datetime");
+            entity.Property(e => e.Dias).HasColumnType("date");
 
             entity.HasOne(d => d.IdPitchNavigation)
-                .WithMany(p => p.Turns)
+                .WithMany(p => p.TurnsIdPitchNavigation)
                 .HasForeignKey(d => d.IdPitch)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Turns__Id_PITCH__3F466844");
+                .HasConstraintName("FK_Turns_USERS");
 
             entity.HasOne(d => d.IdUsersNavigation)
-                .WithMany(p => p.Turns)
+                .WithMany(p => p.TurnsIdUsersNavigation)
                 .HasForeignKey(d => d.IdUsers)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Turns__Id_USERS__403A8C7D");

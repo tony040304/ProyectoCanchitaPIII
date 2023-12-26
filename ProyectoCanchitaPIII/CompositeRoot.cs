@@ -10,6 +10,7 @@ namespace ProyectoCanchitaPIII
             builder.Services.AddScoped<IAuthenticate, AuthenticateServices>();
             builder.Services.AddScoped<ICanchitaServices, CanchitaServices>();
             builder.Services.AddScoped<IUsersService, UsuarioServices>();
+            builder.Services.AddScoped<ITurnServices, TurnServices>();
         }
     }
 }

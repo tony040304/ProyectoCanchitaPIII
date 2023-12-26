@@ -60,7 +60,9 @@ namespace Services.Service
             {
                 return string.Empty;
             }
+
             return GetToken(user);
+
         }
 
         private string GetToken(Users user)
@@ -69,7 +71,7 @@ namespace Services.Service
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
             var claimsForToken = new List<Claim>();
-            claimsForToken.Add(new Claim("sub", user.Username));
+            claimsForToken.Add(new Claim("userId", user.Id.ToString()));
             claimsForToken.Add(new Claim("given_name", user.Username));
             claimsForToken.Add(new Claim("email", user.Email));
             claimsForToken.Add(new Claim("role", user.Role.ToString()));

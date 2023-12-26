@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Models.DTO;
 using Models.MODELS;
 using Services.IServices;
@@ -9,41 +10,24 @@ namespace ProyectoCanchitaPIII.Controllers
 {
     [Route("api/[Controller]")]
     [ApiController]
+    [Authorize(Roles = "2")]
     public class CanchaController : ControllerBase
 
     {
         private readonly ICanchitaServices _service;
-
-        public CanchaController (ICanchitaServices Services)
+        private readonly ITurnServices _turnServices;
+        public CanchaController (ICanchitaServices Services, ITurnServices turn)
         {
             _service = Services;
-        }
-        [HttpPost("DataPitch")]
-        public ActionResult<string> InsertDataPitch(PitchDTO pitch)
-        {
-            string response = string.Empty;
-            try
-            {
-                response = _service.InsertDataPitch(pitch);
-                if (response == "Cancha existente")
-                    return BadRequest(response);
-
-            }
-            catch (Exception ex)
-            {
-                return BadRequest($"{ex.Message}");
-            }
-
-            return Ok(response);
+            _turnServices = turn;
         }
 
-
-        [HttpGet("GetListTurns")]
-        public ActionResult<List<PitchTurnsDTO>> GetTurnsById(int id)
+        [HttpGet("GetListTurns/{id}")]
+        public ActionResult<List<UserTurnsDTO>> GetTurnsById(int id)
         {
             try
             {
-                var response = _service.GetTurnsById(id);
+                var response = _turnServices.GetTurnsById(id);
                 if (response == null)
                 {
                     NotFound("No hay reservas");
@@ -56,8 +40,33 @@ namespace ProyectoCanchitaPIII.Controllers
             }
         }
 
+        [HttpDelete("DeletePitch/{id}")]
+        public ActionResult DeletePitchById(int id)
+        {
+            try
+            {
+                _service.DeletePitchById(id);
+                return Ok();
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpDelete("Deleteturn/{id}")]
+        public ActionResult DeleteTurnById(int id)
+        {
+            try
+            {
+                _turnServices.DeleteTurnById(id);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
 
-        
+                return BadRequest(ex.Message);
+            }
+        }
 
     }
 }

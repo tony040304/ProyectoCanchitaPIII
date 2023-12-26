@@ -8,9 +8,8 @@ namespace Models.DTO
 {
     public class PitchDTO
     {
-        public int IdPitch { get; set; }
-        public string Owner { get; set; } = string.Empty;
-        public string PlaceName { get; set; } = string.Empty;
-        public int IdUsuario { get; set; }
+        public int Id { get; set; }
+        public string Username { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
     }
 }

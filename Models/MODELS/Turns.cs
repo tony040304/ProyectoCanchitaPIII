@@ -10,9 +10,9 @@ namespace Models.MODELS
         public int IdTurns { get; set; }
         public int IdUsers { get; set; }
         public int IdPitch { get; set; }
-        public DateTime Dia { get; set; }
+        public DateTime? Dias { get; set; }
 
-        public virtual Pitch IdPitchNavigation { get; set; }
+        public virtual Users IdPitchNavigation { get; set; }
         public virtual Users IdUsersNavigation { get; set; }
     }
 }

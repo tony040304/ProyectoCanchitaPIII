@@ -16,10 +16,6 @@
    "T4TemplatePath": null,
    "Tables": [
       {
-         "Name": "[dbo].[PITCH]",
-         "ObjectType": 0
-      },
-      {
          "Name": "[dbo].[Turns]",
          "ObjectType": 0
       },

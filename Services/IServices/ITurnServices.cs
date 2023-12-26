@@ -2,14 +2,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Services.IServices
 {
-    public interface ICanchitaServices
+    public interface ITurnServices
     {
-        void DeletePitchById(int id);
+        List<UserTurnsDTO> GetTurnsById(int id);
+        void DeleteTurnById(int id);
     }
 }
