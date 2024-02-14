@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 
 namespace Models.DTO
 {
-    public class PitchDTO
+    public class PitchTurnsDTO
     {
         public string Horario { get; set; }
         public string Canchas { get; set; }
         public string Hubicacion { get; set; }
         public int? Telefono { get; set; }
         public string Nombre { get; set; }
+
     }
 }

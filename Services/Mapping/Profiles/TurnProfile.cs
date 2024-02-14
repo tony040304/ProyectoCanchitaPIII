@@ -14,15 +14,15 @@ namespace Services.Mapping.Profiles
         public TurnProfile() 
         {
             CreateMap<Turns, TurnsDTO>()
-                .ForMember(dest => dest.IdTurns, opt => opt.MapFrom(src => src.IdTurns));
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id));
 
             CreateMap<List<Turns>, List<TurnsDTO>>()
-                .ConvertUsing(src => src.Select(e => new TurnsDTO { IdTurns = e.IdTurns, IdPitch = e.IdPitch, IdUsers = e.IdUsers, Dias = (DateTime)e.Dias }).ToList());
+                .ConvertUsing(src => src.Select(e => new TurnsDTO { Id = e.Id, NamePitch = e.NamePitch, NameUser = e.NameUser, Dia = (DateTime)e.Dia }).ToList());
 
             CreateMap<TurnsDTO, Turns>();
 
             CreateMap<TurnsDTO, Turns>()
-                .ForMember(dest => dest.IdTurns, opt => opt.MapFrom(src => src.IdTurns));
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id));
         }
     }
 }

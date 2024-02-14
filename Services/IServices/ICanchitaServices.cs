@@ -11,5 +11,7 @@ namespace Services.IServices
     public interface ICanchitaServices
     {
         void DeletePitchById(int id);
+
+        string AddInformation(PitchDTO pitch);
     }
 }

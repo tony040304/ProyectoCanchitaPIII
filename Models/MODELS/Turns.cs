@@ -7,12 +7,12 @@ namespace Models.MODELS
 {
     public partial class Turns
     {
-        public int IdTurns { get; set; }
-        public int IdUsers { get; set; }
-        public int IdPitch { get; set; }
-        public DateTime? Dias { get; set; }
+        public int Id { get; set; }
+        public string NameUser { get; set; }
+        public string NamePitch { get; set; }
+        public DateTime? Dia { get; set; }
 
-        public virtual Users IdPitchNavigation { get; set; }
-        public virtual Users IdUsersNavigation { get; set; }
+        public virtual Users NamePitchNavigation { get; set; }
+        public virtual Users NameUserNavigation { get; set; }
     }
 }

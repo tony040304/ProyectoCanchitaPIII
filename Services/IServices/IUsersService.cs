@@ -10,8 +10,8 @@ namespace Services.IServices
 {
     public interface IUsersService
     {
-        List<PitchDTO> GetListPitch();
-        void DeleteUser(int id);
+        List<PitchTurnsDTO> GetListPitch(DateTime date);
+        void DeleteUser(string username);
         string ReserveTurn(TurnsDTO turns);
     }
 }

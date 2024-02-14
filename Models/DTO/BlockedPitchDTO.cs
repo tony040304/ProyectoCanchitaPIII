@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace Models.DTO
 {
-    public class TurnsDTO
+    public class BlockedPitchDTO
     {
+        public string NombreCancha { get; set; }
         public int Id { get; set; }
-        public string NameUser { get; set; }
-        public string NamePitch { get; set; }
-        public DateTime? Dia { get; set; }
+        public bool? IsBlocked { get; set; }
     }
 }

@@ -12,30 +12,33 @@ namespace Models.MODELS.Configurations
     {
         public void Configure(EntityTypeBuilder<Turns> entity)
         {
-            entity.HasKey(e => new { e.IdTurns, e.IdUsers, e.IdPitch })
-                .HasName("PK__Turns__E07395E5FDA32256");
+            entity.ToTable("turns");
 
-            entity.Property(e => e.IdTurns)
-                .ValueGeneratedOnAdd()
-                .HasColumnName("Id_Turns");
+            entity.Property(e => e.Id).HasColumnName("id");
 
-            entity.Property(e => e.IdUsers).HasColumnName("Id_USERS");
+            entity.Property(e => e.Dia)
+                .HasColumnType("date")
+                .HasColumnName("dia");
 
-            entity.Property(e => e.IdPitch).HasColumnName("Id_PITCH");
+            entity.Property(e => e.NamePitch)
+                .HasMaxLength(15)
+                .IsUnicode(false)
+                .HasColumnName("name_pitch");
 
-            entity.Property(e => e.Dias).HasColumnType("date");
+            entity.Property(e => e.NameUser)
+                .HasMaxLength(15)
+                .IsUnicode(false)
+                .HasColumnName("name_user");
 
-            entity.HasOne(d => d.IdPitchNavigation)
-                .WithMany(p => p.TurnsIdPitchNavigation)
-                .HasForeignKey(d => d.IdPitch)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Turns_USERS");
+            entity.HasOne(d => d.NamePitchNavigation)
+                .WithMany(p => p.TurnsNamePitchNavigation)
+                .HasForeignKey(d => d.NamePitch)
+                .HasConstraintName("FK__turns__name_pitc__74AE54BC");
 
-            entity.HasOne(d => d.IdUsersNavigation)
-                .WithMany(p => p.TurnsIdUsersNavigation)
-                .HasForeignKey(d => d.IdUsers)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Turns__Id_USERS__403A8C7D");
+            entity.HasOne(d => d.NameUserNavigation)
+                .WithMany(p => p.TurnsNameUserNavigation)
+                .HasForeignKey(d => d.NameUser)
+                .HasConstraintName("FK__turns__name_user__73BA3083");
 
             OnConfigurePartial(entity);
         }
