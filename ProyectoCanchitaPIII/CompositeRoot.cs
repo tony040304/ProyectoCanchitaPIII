@@ -11,6 +11,7 @@ namespace ProyectoCanchitaPIII
             builder.Services.AddScoped<ICanchitaServices, CanchitaServices>();
             builder.Services.AddScoped<IUsersService, UsuarioServices>();
             builder.Services.AddScoped<ITurnServices, TurnServices>();
+            builder.Services.AddScoped<IAdminServices, AdminServices>();
         }
     }
 }

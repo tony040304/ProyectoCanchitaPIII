@@ -10,7 +10,7 @@ namespace ProyectoCanchitaPIII.Controllers
 {
     [Route("api/[Controller]")]
     [ApiController]
-    [Authorize(Roles = "2")]
+    //[Authorize(Roles = "2")]
     public class CanchaController : ControllerBase
 
     {
@@ -22,12 +22,31 @@ namespace ProyectoCanchitaPIII.Controllers
             _turnServices = turn;
         }
 
-        [HttpGet("GetListTurns/{id}")]
-        public ActionResult<List<UserTurnsDTO>> GetTurnsById(int id)
+
+        [HttpPost("AddInformation")]
+        public ActionResult<string> AddInformation(PitchDTO pitch)
+        {
+            string response = string.Empty;
+            try
+            {
+                response = _service.AddInformation(pitch);
+                if (response == "Datos ya cargados")
+                {
+                    return BadRequest(response);
+                }
+            }catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            return Ok("Datos cargados correctamente");
+        }
+
+        [HttpGet("GetListTurns/{username}")]
+        public ActionResult<List<UserTurnsDTO>> GetTurnsById(string username)
         {
             try
             {
-                var response = _turnServices.GetTurnsById(id);
+                var response = _turnServices.GetTurnsById(username);
                 if (response == null)
                 {
                     NotFound("No hay reservas");
@@ -39,14 +58,13 @@ namespace ProyectoCanchitaPIII.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
-        [HttpDelete("DeletePitch/{id}")]
+[HttpDelete("DeletePitch/{id}")]
         public ActionResult DeletePitchById(int id)
         {
             try
             {
                 _service.DeletePitchById(id);
-                return Ok();
+                return Ok("Cancha borrada");
             }
             catch(Exception ex)
             {
@@ -59,7 +77,7 @@ namespace ProyectoCanchitaPIII.Controllers
             try
             {
                 _turnServices.DeleteTurnById(id);
-                return Ok();
+                return Ok("Turno borrado");
             }
             catch (Exception ex)
             {

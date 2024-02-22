@@ -12,24 +12,24 @@ namespace Services.Service
     public class TurnServices : ITurnServices
     {
         public readonly CANCHITASGOLContext _context;
-        
+
         public TurnServices(CANCHITASGOLContext context)
         {
             _context = context;
         }
 
-        public List<UserTurnsDTO> GetTurnsById(int id)
+        public List<UserTurnsDTO> GetTurnsById(string username)
         {
             var resultado = from Use in _context.Users
-                            join turno in _context.Turns on Use.Id equals turno.IdPitch
-                            join usuario in _context.Users on turno.IdUsers equals usuario.Id
-                            where turno.IdPitch == id || turno.IdUsers == id
+                            join turno in _context.Turns on Use.Username equals turno.NamePitch
+                            join usuario in _context.Users on turno.NameUser equals usuario.Username
+                            where turno.NamePitch == username || turno.NameUser == username
                             select new UserTurnsDTO
                             {
-                                Id = turno.IdTurns,
+                                Id = turno.Id,
                                 PlaceName = Use.Username,
                                 UserName = usuario.Username,
-                                Dia = (DateTime)turno.Dias
+                                Dia = (DateTime)turno.Dia
                             };
 
             return resultado.ToList();
@@ -37,7 +37,7 @@ namespace Services.Service
 
         public void DeleteTurnById(int id)
         {
-            _context.Turns.Remove(_context.Turns.Single(x=>x.IdTurns == id));
+            _context.Turns.Remove(_context.Turns.Single(x=>x.Id == id));
             _context.SaveChanges();
         }
     }

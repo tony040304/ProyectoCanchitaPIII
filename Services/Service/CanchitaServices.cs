@@ -24,13 +24,33 @@ namespace Services.Service
             this._context = _context;
             _mapper = AutoMapperConfig.Configure();
         }
-        
 
+        public string AddInformation(PitchDTO pitch)
+        {
+            Pitch? pitch1 = _context.Pitch.FirstOrDefault(x=> x.Nombre == pitch.Nombre);
+
+            if (pitch1 != null)
+            {
+                return "Datos ya cargados";
+            }
+
+            _context.Pitch.Add(new Pitch()
+            {
+                Nombre = pitch.Nombre,
+                Hubicacion = pitch.Hubicacion,
+                Horario = pitch.Horario,
+                Canchas = pitch.Canchas,
+                Telefono = pitch.Telefono
+            });
+            _context.SaveChanges();
+            string lastPitch = _context.Pitch.OrderBy(x=>x.Nombre).Last().ToString();
+            return lastPitch;
+        }
         public void DeletePitchById(int id)
         {
             _context.Users.Remove(_context.Users.Single(x=> x.Id == id));
             _context.SaveChanges();
         }
-        
+
     }
 }

@@ -26,39 +26,50 @@ namespace Services.Service
 
         }
 
-        public List<PitchDTO> GetListPitch()
+        public List<PitchTurnsDTO> GetListPitch(DateTime date)
         {
-            return _Context.Users
-            .Where(u => u.Role == 2)
-            .Select(s => new PitchDTO() { Id = s.Id, Email = s.Email, Username = s.Username })
-            .ToList();
+            var result = from p in _Context.Pitch
+                         join t in _Context.Turns.Where(t => t.Dia == date) on p.Nombre equals t.NamePitch into joinedTurns
+                         from t in joinedTurns.DefaultIfEmpty()
+                         where t.NameUser == null &&
+                         !_Context.BlockedPitch.Any(bp => bp.NombreCancha == p.Nombre)
+                         select new PitchTurnsDTO
+                         {
+                             Nombre = p.Nombre,
+                             Horario = p.Horario,
+                             Hubicacion = p.Hubicacion,
+                             Canchas = p.Canchas,
+                             Telefono = p.Telefono,
+                         };
+
+
+            return result.ToList();
         }
 
-        
-        public void DeleteUser(int id)
+
+        public void DeleteUser(string username)
         {
-            _Context.Users.Remove(_Context.Users.Single(d => d.Id == id));
+            _Context.Users.Remove(_Context.Users.Single(d => d.Username == username));
             _Context.SaveChanges();
         }
-
-        public string ReserveTurn(TurnsDTO turns)
+public string ReserveTurn(TurnsDTO turns)
         {
-            Turns? turn = _Context.Turns.FirstOrDefault(x => x.Dias == turns.Dias);
+            Turns? turn = _Context.Turns.FirstOrDefault(x => x.Dia == turns.Dia);
 
-            if (turn != null || turns.Dias < DateTime.Now.Date)
+            if (turn != null || turns.Dia < DateTime.Now.Date)
             {
                 return "Turno no disponible";
             }
 
             _Context.Turns.Add(new Turns()
             {
-                Dias = turns.Dias,
-                IdUsers = turns.IdUsers,
-                IdPitch = turns.IdPitch,
+                Dia = turns.Dia,
+                NameUser = turns.NameUser,
+                NamePitch = turns.NamePitch,
             });
             _Context.SaveChanges();
 
-            string lastTurn = _Context.Turns.OrderBy(x=>x.IdTurns).Last().ToString();
+            string lastTurn = _Context.Turns.OrderBy(x=>x.Id).Last().ToString();
             return lastTurn;
 
         }
