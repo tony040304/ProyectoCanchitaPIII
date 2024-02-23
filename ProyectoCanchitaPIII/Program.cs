@@ -38,7 +38,7 @@ builder.Services.AddAuthorization(option =>
 {
     option.AddPolicy("Admin", policy => policy.RequireRole("1"));
     option.AddPolicy("Canchita", policy => policy.RequireRole("2"));
-    option.AddPolicy("Usuario", policy => policy.RequireRole("3"));
+    option.AddPolicy("Usuario", policy => policy.RequireRole("0"));
 });
 //Jwt configuration ends here
 

@@ -9,7 +9,7 @@ namespace ProyectoCanchitaPIII.Controllers
 {
     [Route("api/[Controller]")]
     [ApiController]
-    //[Authorize(Roles = "3")]
+    //[Authorize(Roles = "0")]
     public class UserController : ControllerBase
     {
         private readonly IUsersService _usersService;
@@ -57,52 +57,65 @@ namespace ProyectoCanchitaPIII.Controllers
                 return BadRequest($"{ex.Message}");
             }
         }
-[HttpDelete("DeleteUser")]
-    public ActionResult DeleteUser(string username)
-    {
-        try
+        [HttpDelete("DeleteUser")]
+        public ActionResult DeleteUser([FromQuery] string username)
         {
-            _usersService.DeleteUser(username);
-            return Ok();
-        }
-        catch(Exception ex)
-        {
-
-            return BadRequest(ex.Message);
-        }
-    }
-
-    [HttpPost("ReservarTurno")]
-    public ActionResult<string> ReserveTurn(TurnsDTO turns)
-    {
-        string response = string.Empty;
-        try
-        {
-            response = _usersService.ReserveTurn(turns);
-            if (response == "Turno no disponible")
+            try
             {
-                return BadRequest(response);
+                _usersService.DeleteUser(username);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(ex.Message);
             }
         }
-        catch (Exception ex)
-        {
-            return BadRequest(ex.Message);
-        }
-        return Ok("Turno resrvado");
-    }
 
-    [HttpDelete("Deleteturn/{id}")]
-    public ActionResult DeleteTurnById([FromRoute] int id)
-    {
-        try
+        [HttpPost("ReservarTurno")]
+        public ActionResult<string> ReserveTurn([FromBody] TurnsDTO turns)
         {
-            _turnServices.DeleteTurnById(id);
-            return Ok("Turno borrado");
+            string response = string.Empty;
+            try
+            {
+                response = _usersService.ReserveTurn(turns);
+                if (response == "Turno no disponible")
+                {
+                    return BadRequest(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            return Ok("Turno resrvado");
         }
-        catch (Exception ex)
-        {
 
-            return BadRequest(ex.Message);
+        [HttpDelete("Deleteturn")]
+        public ActionResult DeleteTurnById([FromQuery] int id)
+        {
+            try
+            {
+                _turnServices.DeleteTurnById(id);
+                return Ok("Turno borrado");
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpPut("ChangePasswords/{username}")]
+        public ActionResult ChangePasword(string username,[FromBody] UserViewModel user)
+        {
+            try
+            {
+                _usersService.ChangePasword(username, user);
+                return Ok("Contraseña cambiada");   
+            }catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

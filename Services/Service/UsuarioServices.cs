@@ -52,7 +52,7 @@ namespace Services.Service
             _Context.Users.Remove(_Context.Users.Single(d => d.Username == username));
             _Context.SaveChanges();
         }
-public string ReserveTurn(TurnsDTO turns)
+        public string ReserveTurn(TurnsDTO turns)
         {
             Turns? turn = _Context.Turns.FirstOrDefault(x => x.Dia == turns.Dia);
 
@@ -72,6 +72,12 @@ public string ReserveTurn(TurnsDTO turns)
             string lastTurn = _Context.Turns.OrderBy(x=>x.Id).Last().ToString();
             return lastTurn;
 
+        }
+        public void ChangePasword(string username, UserViewModel user)
+        {
+            var UserModify = _Context.Users.Where(x=> x.Username == username).First();
+            UserModify.Userpassword = user.Userpassword;
+            _Context.SaveChanges();
         }
 
 

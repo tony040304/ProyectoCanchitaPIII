@@ -1,4 +1,5 @@
 ﻿using Models.DTO;
+using Models.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,8 +11,8 @@ namespace Services.IServices
 {
     public interface ICanchitaServices
     {
-        void DeletePitchById(int id);
-
-        string AddInformation(PitchDTO pitch);
+        void DeletePitchByName(string pitchname);
+        void UpdatePithInfo(string PitchName, PitchViewModel pitch);
+        string AddInformation(string pitchname, PitchViewModel pitch);
     }
 }

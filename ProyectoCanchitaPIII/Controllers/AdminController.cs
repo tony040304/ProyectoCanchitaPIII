@@ -9,7 +9,7 @@ namespace ProyectoCanchitaPIII.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize(Roles = "1")]
+    [Authorize(Roles = "1")]
     public class AdminController : ControllerBase
     {
         private readonly IUsersService _usersService;
@@ -25,12 +25,12 @@ namespace ProyectoCanchitaPIII.Controllers
             _adminServices = adminServices;
         }
 
-        [HttpDelete("DeletePitch/{id}")]
-        public ActionResult DeletePitchById(int id)
+        [HttpDelete("DeletePitch")]
+        public ActionResult DeletePitchByName([FromQuery] string pitchname)
         {
             try
             {
-                _canchitaServices.DeletePitchById(id);
+                _canchitaServices.DeletePitchByName(pitchname);
                 return Ok("Cancha borrada");
             }
             catch (Exception ex)
@@ -38,8 +38,8 @@ namespace ProyectoCanchitaPIII.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [HttpDelete("DeleteUser/{username}")]
-        public ActionResult DeleteUser(string username)
+        [HttpDelete("DeleteUser")]
+        public ActionResult DeleteUser([FromQuery] string username)
         {
             try
             {
@@ -52,9 +52,9 @@ namespace ProyectoCanchitaPIII.Controllers
                 return BadRequest(ex.Message);
             }
         }
-[11:44]
-[HttpDelete("Deleteturn/{id}")]
-        public ActionResult DeleteTurnById(int id)
+
+        [HttpDelete("Deleteturn")]
+        public ActionResult DeleteTurnById([FromQuery] int id)
         {
             try
             {
@@ -68,7 +68,7 @@ namespace ProyectoCanchitaPIII.Controllers
             }
         }
         [HttpPost("BlockPitch")]
-        public ActionResult<string> BlockPitch(BlockedPitchDTO blockedPitch)
+        public ActionResult<string> BlockPitch([FromBody] BlockedPitchDTO blockedPitch)
         {
             string response = string.Empty;
             try
@@ -86,7 +86,7 @@ namespace ProyectoCanchitaPIII.Controllers
             }
 
         }
-        [HttpDelete("UnlockPitch/{blockedPitchId}")]
+        [HttpDelete("UnlockPitch")]
         public ActionResult UnlockPitch(int blockedPitchId)
         {
             try
@@ -111,6 +111,57 @@ namespace ProyectoCanchitaPIII.Controllers
                 }
                 return Ok(response);
             }catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpGet("GetPitchList")]
+        public ActionResult<PitchDTO> GetPitchList()
+        {
+            try
+            {
+                var response = _adminServices.GetPitchList();
+                if (response.Count == 0)
+                {
+                    return NotFound("No hay canchas registradas");
+                }
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpGet("GetUsersList")]
+        public ActionResult<UserDTO> GetUserList()
+        {
+            try
+            {
+                var response = _adminServices.GetUserList();
+                if (response.Count == 0)
+                {
+                    return NotFound("No hay usuarios registradas");
+                }
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpGet("GetTurnList")]
+        public ActionResult<PitchDTO> GetTurnList()
+        {
+            try
+            {
+                var response = _adminServices.GetTurnList();
+                if (response.Count == 0)
+                {
+                    return NotFound("No hay turnos registrados");
+                }
+                return Ok(response);
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }

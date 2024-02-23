@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Models.DTO;
 using Models.MODELS;
+using Models.ViewModel;
 using Services.IServices;
 using Services.Mapping;
 using System;
@@ -25,9 +26,9 @@ namespace Services.Service
             _mapper = AutoMapperConfig.Configure();
         }
 
-        public string AddInformation(PitchDTO pitch)
+        public string AddInformation(string pitchname, PitchViewModel pitch)
         {
-            Pitch? pitch1 = _context.Pitch.FirstOrDefault(x=> x.Nombre == pitch.Nombre);
+            Pitch? pitch1 = _context.Pitch.FirstOrDefault(x=> x.Nombre == pitchname);
 
             if (pitch1 != null)
             {
@@ -36,7 +37,7 @@ namespace Services.Service
 
             _context.Pitch.Add(new Pitch()
             {
-                Nombre = pitch.Nombre,
+                Nombre = pitchname,
                 Hubicacion = pitch.Hubicacion,
                 Horario = pitch.Horario,
                 Canchas = pitch.Canchas,
@@ -46,9 +47,20 @@ namespace Services.Service
             string lastPitch = _context.Pitch.OrderBy(x=>x.Nombre).Last().ToString();
             return lastPitch;
         }
-        public void DeletePitchById(int id)
+        public void DeletePitchByName(string pitchname)
         {
-            _context.Users.Remove(_context.Users.Single(x=> x.Id == id));
+            _context.Pitch.Remove(_context.Pitch.Single(x=> x.Nombre == pitchname));
+            _context.SaveChanges();
+        }
+
+        public void UpdatePithInfo(string PitchName, PitchViewModel pitch)
+        {
+            Pitch? NamePitch = _context.Pitch.FirstOrDefault(x => x.Nombre == PitchName);
+            NamePitch.Telefono = pitch.Telefono;
+            NamePitch.Hubicacion = pitch.Hubicacion;
+            NamePitch.Canchas = pitch.Canchas;
+            NamePitch.Horario = pitch.Horario;
+
             _context.SaveChanges();
         }
 

@@ -13,5 +13,6 @@ namespace Services.IServices
         List<PitchTurnsDTO> GetListPitch(DateTime date);
         void DeleteUser(string username);
         string ReserveTurn(TurnsDTO turns);
+        void ChangePasword(string username, UserViewModel user);
     }
 }

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Models.DTO;
 using Models.MODELS;
+using Models.ViewModel;
 using Services.IServices;
 using Services.Service;
 using System.Diagnostics.Contracts;
@@ -10,7 +11,7 @@ namespace ProyectoCanchitaPIII.Controllers
 {
     [Route("api/[Controller]")]
     [ApiController]
-    //[Authorize(Roles = "2")]
+    [Authorize(Roles = "2")]
     public class CanchaController : ControllerBase
 
     {
@@ -23,13 +24,13 @@ namespace ProyectoCanchitaPIII.Controllers
         }
 
 
-        [HttpPost("AddInformation")]
-        public ActionResult<string> AddInformation(PitchDTO pitch)
+        [HttpPost("AddInformation/{pitchname}")]
+        public ActionResult<string> AddInformation(string pitchname, [FromBody] PitchViewModel pitch)
         {
             string response = string.Empty;
             try
             {
-                response = _service.AddInformation(pitch);
+                response = _service.AddInformation(pitchname ,pitch);
                 if (response == "Datos ya cargados")
                 {
                     return BadRequest(response);
@@ -58,12 +59,12 @@ namespace ProyectoCanchitaPIII.Controllers
                 return BadRequest(ex.Message);
             }
         }
-[HttpDelete("DeletePitch/{id}")]
-        public ActionResult DeletePitchById(int id)
+        [HttpDelete("DeletePitch")]
+        public ActionResult DeletePitchByName([FromQuery] string pitchname)
         {
             try
             {
-                _service.DeletePitchById(id);
+                _service.DeletePitchByName(pitchname);
                 return Ok("Cancha borrada");
             }
             catch(Exception ex)
@@ -71,8 +72,8 @@ namespace ProyectoCanchitaPIII.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [HttpDelete("Deleteturn/{id}")]
-        public ActionResult DeleteTurnById(int id)
+        [HttpDelete("Deleteturn")]
+        public ActionResult DeleteTurnById([FromQuery] int id)
         {
             try
             {
@@ -82,6 +83,19 @@ namespace ProyectoCanchitaPIII.Controllers
             catch (Exception ex)
             {
 
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpPut("UpdatePitchInfo/{PitchName}")]
+        public ActionResult UpdatePithInfo(string PitchName, PitchViewModel pitch)
+        {
+            try
+            {
+                _service.UpdatePithInfo(PitchName, pitch);
+                return Ok("Datos actualizados");
+            }
+            catch (Exception ex)
+            {
                 return BadRequest(ex.Message);
             }
         }

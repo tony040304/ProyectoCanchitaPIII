@@ -13,5 +13,8 @@ namespace Services.IServices
         string BlockPitch(BlockedPitchDTO blockedPitch);
         void UnlockPitch(int blockedPitchId);
         List<BlockedPitchDTO> GetBlockedPitchList();
+        List<UserDTO> GetUserList();
+        List<PitchDTO> GetPitchList();
+        List<TurnsDTO> GetTurnList();
     }
 }
