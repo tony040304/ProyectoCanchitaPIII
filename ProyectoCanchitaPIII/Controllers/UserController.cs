@@ -9,7 +9,7 @@ namespace ProyectoCanchitaPIII.Controllers
 {
     [Route("api/[Controller]")]
     [ApiController]
-    //[Authorize(Roles = "0")]
+    [Authorize(Roles = "0")]
     public class UserController : ControllerBase
     {
         private readonly IUsersService _usersService;
