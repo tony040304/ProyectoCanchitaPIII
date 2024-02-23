@@ -14,5 +14,6 @@ namespace Services.IServices
         void DeletePitchByName(string pitchname);
         void UpdatePithInfo(string PitchName, PitchViewModel pitch);
         string AddInformation(string pitchname, PitchViewModel pitch);
+        string ReserveTurn(TurnsDTO turns);
     }
 }

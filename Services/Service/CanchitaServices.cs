@@ -63,6 +63,27 @@ namespace Services.Service
 
             _context.SaveChanges();
         }
+        public string ReserveTurn(TurnsDTO turns)
+        {
+            Turns? turn = _context.Turns.FirstOrDefault(x => x.Dia == turns.Dia);
+
+            if (turn != null || turns.Dia < DateTime.Now.Date)
+            {
+                return "Turno no disponible";
+            }
+
+            _context.Turns.Add(new Turns()
+            {
+                Dia = turns.Dia,
+                NameUser = turns.NameUser,
+                NamePitch = turns.NamePitch,
+            });
+            _context.SaveChanges();
+
+            string lastTurn = _context.Turns.OrderBy(x => x.Id).Last().ToString();
+            return lastTurn;
+
+        }
 
     }
 }

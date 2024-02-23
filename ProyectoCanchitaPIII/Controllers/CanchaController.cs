@@ -41,6 +41,24 @@ namespace ProyectoCanchitaPIII.Controllers
             }
             return Ok("Datos cargados correctamente");
         }
+        [HttpPost("ReservarTurno")]
+        public ActionResult<string> ReserveTurn([FromBody] TurnsDTO turns)
+        {
+            string response = string.Empty;
+            try
+            {
+                response = _service.ReserveTurn(turns);
+                if (response == "Turno no disponible")
+                {
+                    return BadRequest(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            return Ok("Turno resrvado");
+        }
 
         [HttpGet("GetListTurns/{username}")]
         public ActionResult<List<UserTurnsDTO>> GetTurnsById(string username)
