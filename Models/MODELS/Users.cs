@@ -9,18 +9,15 @@ namespace Models.MODELS
     {
         public Users()
         {
-            TurnsNamePitchNavigation = new HashSet<Turns>();
-            TurnsNameUserNavigation = new HashSet<Turns>();
+            Turns = new HashSet<Turns>();
         }
 
         public int Id { get; set; }
         public string Username { get; set; }
         public string Userpassword { get; set; }
         public string Email { get; set; }
-        public int? Role { get; set; }
+        public string Role { get; set; }
 
-        public virtual Pitch Pitch { get; set; }
-        public virtual ICollection<Turns> TurnsNamePitchNavigation { get; set; }
-        public virtual ICollection<Turns> TurnsNameUserNavigation { get; set; }
+        public virtual ICollection<Turns> Turns { get; set; }
     }
 }

@@ -9,7 +9,7 @@ namespace Services.IServices
 {
     public interface ITurnServices
     {
-        List<UserTurnsDTO> GetTurnsById(string username);
+        List<UserTurnsDTO> GetTurnsById(int id);
         void DeleteTurnById(int id);
     }
 }

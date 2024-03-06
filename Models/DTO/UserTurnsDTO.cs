@@ -10,8 +10,9 @@ namespace Models.DTO
     {
         public int Id { get; set; }
         public DateTime Dia { get; set; }
-        public string PlaceName { get; set; } = string.Empty;
+        public string PlaceName { get; set; }
         public string UserName { get; set; }
+        public string Descripcion { get; set; }
 
     }
 }

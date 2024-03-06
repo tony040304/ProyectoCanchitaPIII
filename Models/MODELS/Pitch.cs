@@ -9,16 +9,18 @@ namespace Models.MODELS
     {
         public Pitch()
         {
-            BlockedPitch = new HashSet<BlockedPitch>();
+            Turns = new HashSet<Turns>();
         }
 
-        public string Horario { get; set; }
-        public string Canchas { get; set; }
-        public string Hubicacion { get; set; }
-        public int? Telefono { get; set; }
         public string Nombre { get; set; }
+        public string Password { get; set; }
+        public string Email { get; set; }
+        public string Horario { get; set; }
+        public string Ubicacion { get; set; }
+        public bool? IsBlocked { get; set; }
+        public int Id { get; set; }
+        public string Role { get; set; }
 
-        public virtual Users NombreNavigation { get; set; }
-        public virtual ICollection<BlockedPitch> BlockedPitch { get; set; }
+        public virtual ICollection<Turns> Turns { get; set; }
     }
 }

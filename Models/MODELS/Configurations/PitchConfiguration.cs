@@ -12,23 +12,41 @@ namespace Models.MODELS.Configurations
     {
         public void Configure(EntityTypeBuilder<Pitch> entity)
         {
-            entity.HasKey(e => e.Nombre);
+            entity.Property(e => e.Email)
+                .IsRequired()
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("email");
+
+            entity.Property(e => e.Horario)
+                .IsRequired()
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("horario");
+
+            entity.Property(e => e.IsBlocked).HasColumnName("isBlocked");
 
             entity.Property(e => e.Nombre)
-                .HasMaxLength(15)
-                .IsUnicode(false);
+                .IsRequired()
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("nombre");
 
-            entity.Property(e => e.Canchas).IsUnicode(false);
+            entity.Property(e => e.Password)
+                .IsRequired()
+                .IsUnicode(false)
+                .HasColumnName("password");
 
-            entity.Property(e => e.Horario).IsUnicode(false);
+            entity.Property(e => e.Role)
+                .HasMaxLength(2)
+                .IsUnicode(false)
+                .HasDefaultValueSql("((2))");
 
-            entity.Property(e => e.Hubicacion).IsUnicode(false);
-
-            entity.HasOne(d => d.NombreNavigation)
-                .WithOne(p => p.Pitch)
-                .HasForeignKey<Pitch>(d => d.Nombre)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Pitch__Nombre__02084FDA");
+            entity.Property(e => e.Ubicacion)
+                .IsRequired()
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("ubicacion");
 
             OnConfigurePartial(entity);
         }

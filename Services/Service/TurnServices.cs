@@ -1,4 +1,5 @@
-﻿using Models.DTO;
+﻿using Microsoft.EntityFrameworkCore;
+using Models.DTO;
 using Models.MODELS;
 using Services.IServices;
 using System;
@@ -18,19 +19,22 @@ namespace Services.Service
             _context = context;
         }
 
-        public List<UserTurnsDTO> GetTurnsById(string username)
+        public List<UserTurnsDTO> GetTurnsById(int id)
         {
-            var resultado = from Use in _context.Users
-                            join turno in _context.Turns on Use.Username equals turno.NamePitch
-                            join usuario in _context.Users on turno.NameUser equals usuario.Username
-                            where turno.NamePitch == username || turno.NameUser == username
-                            select new UserTurnsDTO
-                            {
-                                Id = turno.Id,
-                                PlaceName = Use.Username,
-                                UserName = usuario.Username,
-                                Dia = (DateTime)turno.Dia
-                            };
+            var resultado = from t in _context.Turns
+                        join p in _context.Pitch on t.IdPitch equals p.Id into pitchGroup
+                        from p in pitchGroup.DefaultIfEmpty()
+                        join u in _context.Users on t.IdUser equals u.Id into userGroup
+                        from u in userGroup.DefaultIfEmpty()
+                        where t.IdPitch == id || t.IdUser == id
+                        select new UserTurnsDTO
+                        {
+                            Id = t.Id,
+                            Dia = (DateTime)t.Dia,
+                            Descripcion = t.Descripcion,
+                            PlaceName = p != null ? p.Nombre : null,
+                            UserName = u != null ? u.Username : null
+                        };
 
             return resultado.ToList();
         }

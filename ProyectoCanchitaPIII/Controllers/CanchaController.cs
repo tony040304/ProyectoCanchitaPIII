@@ -24,23 +24,7 @@ namespace ProyectoCanchitaPIII.Controllers
         }
 
 
-        [HttpPost("AddInformation/{pitchname}")]
-        public ActionResult<string> AddInformation(string pitchname, [FromBody] PitchViewModel pitch)
-        {
-            string response = string.Empty;
-            try
-            {
-                response = _service.AddInformation(pitchname ,pitch);
-                if (response == "Datos ya cargados")
-                {
-                    return BadRequest(response);
-                }
-            }catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            return Ok("Datos cargados correctamente");
-        }
+        
         [HttpPost("ReservarTurno")]
         public ActionResult<string> ReserveTurn([FromBody] TurnsDTO turns)
         {
@@ -60,12 +44,12 @@ namespace ProyectoCanchitaPIII.Controllers
             return Ok("Turno resrvado");
         }
 
-        [HttpGet("GetListTurns/{username}")]
-        public ActionResult<List<UserTurnsDTO>> GetTurnsById(string username)
+        [HttpGet("GetListTurns/{id}")]
+        public ActionResult<List<UserTurnsDTO>> GetTurnsById(int id)
         {
             try
             {
-                var response = _turnServices.GetTurnsById(username);
+                var response = _turnServices.GetTurnsById(id);
                 if (response == null)
                 {
                     NotFound("No hay reservas");
@@ -78,16 +62,16 @@ namespace ProyectoCanchitaPIII.Controllers
             }
         }
         [HttpDelete("DeletePitch")]
-        public ActionResult DeletePitchByName([FromQuery] string pitchname)
+        public ActionResult DeletePitchByName([FromQuery] int id)
         {
             try
             {
-                _service.DeletePitchByName(pitchname);
+                _service.DeletePitchByName(id);
                 return Ok("Cancha borrada");
             }
-            catch(Exception ex)
+            catch
             {
-                return BadRequest(ex.Message);
+                return BadRequest("Tiene turnos reservados, no se puede borrar esta cancha.");
             }
         }
         [HttpDelete("Deleteturn")]
@@ -104,12 +88,12 @@ namespace ProyectoCanchitaPIII.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [HttpPut("UpdatePitchInfo/{PitchName}")]
-        public ActionResult UpdatePithInfo(string PitchName, PitchViewModel pitch)
+        [HttpPut("UpdatePitchInfo/{id}")]
+        public ActionResult UpdatePithInfo(int id, PitchViewModel pitch)
         {
             try
             {
-                _service.UpdatePithInfo(PitchName, pitch);
+                _service.UpdatePithInfo(id, pitch);
                 return Ok("Datos actualizados");
             }
             catch (Exception ex)

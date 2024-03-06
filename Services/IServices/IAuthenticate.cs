@@ -10,7 +10,8 @@ namespace Services.IServices
 {
     public interface IAuthenticate
     {
-        string CreatUser(UserDTO User);
+        string CreateUser(UserDTO User);
+        string CreatePitch(PitchDTO Pitch);
         string Login(AuthenticateViewModel User);
 
     }

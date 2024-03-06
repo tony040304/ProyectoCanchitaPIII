@@ -8,11 +8,12 @@ namespace Models.MODELS
     public partial class Turns
     {
         public int Id { get; set; }
-        public string NameUser { get; set; }
-        public string NamePitch { get; set; }
         public DateTime? Dia { get; set; }
+        public int? IdPitch { get; set; }
+        public int? IdUser { get; set; }
+        public string Descripcion { get; set; }
 
-        public virtual Users NamePitchNavigation { get; set; }
-        public virtual Users NameUserNavigation { get; set; }
+        public virtual Pitch IdPitchNavigation { get; set; }
+        public virtual Users IdUserNavigation { get; set; }
     }
 }

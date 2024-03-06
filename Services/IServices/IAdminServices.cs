@@ -1,5 +1,6 @@
 ﻿using Models.DTO;
 using Models.MODELS;
+using Models.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,11 +11,12 @@ namespace Services.IServices
 {
     public interface IAdminServices
     {
-        string BlockPitch(BlockedPitchDTO blockedPitch);
-        void UnlockPitch(int blockedPitchId);
-        List<BlockedPitchDTO> GetBlockedPitchList();
+        //string BlockPitch(PitchDTO blockedPitch);
+        void UnlockPitch(int Id, BlockViewModel block);
+        List<PitchDTO> GetBlockedPitchList();
         List<UserDTO> GetUserList();
         List<PitchDTO> GetPitchList();
-        List<TurnsDTO> GetTurnList();
+        List<TurnsDTO> GetTurnList(int pitchId);
+        List<TurnsDTO> GetTurnListUser(int userId);
     }
 }

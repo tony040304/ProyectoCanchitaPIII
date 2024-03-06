@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Models.DTO;
 using Models.MODELS;
+using Models.ViewModel;
 using Services.IServices;
 using Services.Mapping;
 using System;
@@ -22,50 +23,35 @@ namespace Services.Service
             _mapper = AutoMapperConfig.Configure();
         }
 
-
-        public string BlockPitch(BlockedPitchDTO blockedPitch)
+        public void UnlockPitch(int Id, BlockViewModel block)
         {
-            BlockedPitch? blocked = _context.BlockedPitch.FirstOrDefault(x=> x.Id == blockedPitch.Id);
+            Pitch? NamePitch = _context.Pitch.FirstOrDefault(x => x.Id == Id);
+            NamePitch.IsBlocked = block.isBlocked;
 
-            if (blocked != null)
-            {
-                return "Cancha bloqueada";
-            }
-
-            _context.BlockedPitch.Add(new BlockedPitch()
-            {
-                Id = blockedPitch.Id,
-                NombreCancha = blockedPitch.NombreCancha,
-                IsBlocked = true,
-            });
-            _context.SaveChanges();
-
-            string lastBlocked = _context.BlockedPitch.OrderBy(x=>x.Id).Last().ToString();
-            return lastBlocked;
-        }
-
-        public void UnlockPitch(int blockedPitchId)
-        {
-            _context.BlockedPitch.Remove(_context.BlockedPitch.Single(x => x.Id == blockedPitchId));
             _context.SaveChanges();
         }
-        public List<BlockedPitchDTO> GetBlockedPitchList()
+        public List<PitchDTO> GetBlockedPitchList()
         {
-            return _context.BlockedPitch.ToList().Select(x => new BlockedPitchDTO() { Id = x.Id, IsBlocked = x.IsBlocked, NombreCancha = x.NombreCancha }).ToList();
+            return _mapper.Map<List<PitchDTO>>(_context.Pitch.Where(x=>x.IsBlocked == true).ToList());
         }
 
         public List<UserDTO> GetUserList()
         {
-            return _context.Users.ToList().Where(x=>x.Role == 0).Select(x => new UserDTO() { Username = x.Username, Email = x.Email, Userpassword = x.Userpassword, Id = x.Id, Role = (int)x.Role }).ToList();
+            return _mapper.Map<List<UserDTO>>(_context.Users.Where(x=>x.Role == "0").ToList());
         }
 
         public List<PitchDTO> GetPitchList()
         {
-            return _context.Pitch.ToList().Select(x => new PitchDTO() { Canchas = x.Canchas, Horario = x.Horario, Hubicacion = x.Hubicacion, Nombre = x.Nombre , Telefono = x.Telefono }).ToList();
+            return _mapper.Map<List<PitchDTO>>(_context.Pitch.ToList());
         }
-        public List<TurnsDTO> GetTurnList()
+        public List<TurnsDTO> GetTurnList(int pitchId)
         {
-            return _context.Turns.ToList().Select(x => new TurnsDTO() { Id = x.Id, Dia = x.Dia, NamePitch = x.NamePitch, NameUser = x.NameUser }).ToList();
+            return _mapper.Map<List<TurnsDTO>>(_context.Turns.Where(x=>x.IdPitch == pitchId).ToList());
+        }
+
+        public List<TurnsDTO> GetTurnListUser(int userId)
+        {
+            return _mapper.Map<List<TurnsDTO>>(_context.Turns.Where(x => x.IdUser == userId).ToList());
         }
     }
 }

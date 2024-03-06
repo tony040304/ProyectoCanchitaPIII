@@ -16,29 +16,28 @@ namespace Models.MODELS.Configurations
 
             entity.Property(e => e.Id).HasColumnName("id");
 
+            entity.Property(e => e.Descripcion)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("descripcion");
+
             entity.Property(e => e.Dia)
                 .HasColumnType("date")
                 .HasColumnName("dia");
 
-            entity.Property(e => e.NamePitch)
-                .HasMaxLength(15)
-                .IsUnicode(false)
-                .HasColumnName("name_pitch");
+            entity.Property(e => e.IdPitch).HasColumnName("id_pitch");
 
-            entity.Property(e => e.NameUser)
-                .HasMaxLength(15)
-                .IsUnicode(false)
-                .HasColumnName("name_user");
+            entity.Property(e => e.IdUser).HasColumnName("id_user");
 
-            entity.HasOne(d => d.NamePitchNavigation)
-                .WithMany(p => p.TurnsNamePitchNavigation)
-                .HasForeignKey(d => d.NamePitch)
-                .HasConstraintName("FK__turns__name_pitc__74AE54BC");
+            entity.HasOne(d => d.IdPitchNavigation)
+                .WithMany(p => p.Turns)
+                .HasForeignKey(d => d.IdPitch)
+                .HasConstraintName("FK_Turn_Pitch");
 
-            entity.HasOne(d => d.NameUserNavigation)
-                .WithMany(p => p.TurnsNameUserNavigation)
-                .HasForeignKey(d => d.NameUser)
-                .HasConstraintName("FK__turns__name_user__73BA3083");
+            entity.HasOne(d => d.IdUserNavigation)
+                .WithMany(p => p.Turns)
+                .HasForeignKey(d => d.IdUser)
+                .HasConstraintName("FK_Turns_user");
 
             OnConfigurePartial(entity);
         }

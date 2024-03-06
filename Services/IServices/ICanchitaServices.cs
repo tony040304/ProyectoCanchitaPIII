@@ -11,9 +11,8 @@ namespace Services.IServices
 {
     public interface ICanchitaServices
     {
-        void DeletePitchByName(string pitchname);
-        void UpdatePithInfo(string PitchName, PitchViewModel pitch);
-        string AddInformation(string pitchname, PitchViewModel pitch);
+        void DeletePitchByName(int id);
+        void UpdatePithInfo(int id, PitchViewModel pitch);
         string ReserveTurn(TurnsDTO turns);
     }
 }

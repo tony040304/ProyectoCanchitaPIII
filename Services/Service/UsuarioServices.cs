@@ -29,43 +29,49 @@ namespace Services.Service
         public List<PitchTurnsDTO> GetListPitch(DateTime date)
         {
             var result = from p in _Context.Pitch
-                         join t in _Context.Turns.Where(t => t.Dia == date) on p.Nombre equals t.NamePitch into joinedTurns
-                         from t in joinedTurns.DefaultIfEmpty()
-                         where t.NameUser == null &&
-                         !_Context.BlockedPitch.Any(bp => bp.NombreCancha == p.Nombre)
+                         join t in _Context.Turns.Where(turn => turn.Dia == date)
+                         on p.Id equals t.IdPitch into pitchTurns
+                         from pt in pitchTurns.DefaultIfEmpty()
+                         where pt == null && (p.IsBlocked == false || p.IsBlocked == null)
                          select new PitchTurnsDTO
                          {
+                             Id = p.Id,
                              Nombre = p.Nombre,
+                             Email = p.Email,
                              Horario = p.Horario,
-                             Hubicacion = p.Hubicacion,
-                             Canchas = p.Canchas,
-                             Telefono = p.Telefono,
+                             Ubicacion = p.Ubicacion
                          };
-
 
             return result.ToList();
         }
 
 
-        public void DeleteUser(string username)
+
+        public void DeleteUser(int id)
         {
-            _Context.Users.Remove(_Context.Users.Single(d => d.Username == username));
+            _Context.Users.Remove(_Context.Users.Single(d => d.Id == id));
             _Context.SaveChanges();
         }
         public string ReserveTurn(TurnsDTO turns)
         {
             Turns? turn = _Context.Turns.FirstOrDefault(x => x.Dia == turns.Dia);
-
             if (turn != null || turns.Dia < DateTime.Now.Date)
             {
                 return "Turno no disponible";
             }
+            Pitch pitch = _Context.Pitch.FirstOrDefault(p => p.Id == turns.IdPitch && (bool)p.IsBlocked);
+            if (pitch != null)
+            {
+                return "La cancha está bloqueada y no se puede reservar en este momento";
+            }
+
 
             _Context.Turns.Add(new Turns()
             {
                 Dia = turns.Dia,
-                NameUser = turns.NameUser,
-                NamePitch = turns.NamePitch,
+                IdUser = turns.IdUser,
+                IdPitch = turns.IdPitch,
+                Descripcion = turns.Descripcion
             });
             _Context.SaveChanges();
 
@@ -73,9 +79,9 @@ namespace Services.Service
             return lastTurn;
 
         }
-        public void ChangePasword(string username, UserViewModel user)
+        public void ChangePasword(int id, UserViewModel user)
         {
-            var UserModify = _Context.Users.Where(x=> x.Username == username).First();
+            var UserModify = _Context.Users.Where(x=> x.Id == id).First();
             UserModify.Userpassword = user.Userpassword;
             _Context.SaveChanges();
         }

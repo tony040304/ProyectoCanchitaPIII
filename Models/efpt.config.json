@@ -16,10 +16,6 @@
    "T4TemplatePath": null,
    "Tables": [
       {
-         "Name": "[dbo].[BlockedPitch]",
-         "ObjectType": 0
-      },
-      {
          "Name": "[dbo].[Pitch]",
          "ObjectType": 0
       },

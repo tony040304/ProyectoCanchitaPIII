@@ -25,40 +25,18 @@ namespace Services.Service
             this._context = _context;
             _mapper = AutoMapperConfig.Configure();
         }
-
-        public string AddInformation(string pitchname, PitchViewModel pitch)
+        public void DeletePitchByName(int id)
         {
-            Pitch? pitch1 = _context.Pitch.FirstOrDefault(x=> x.Nombre == pitchname);
-
-            if (pitch1 != null)
-            {
-                return "Datos ya cargados";
-            }
-
-            _context.Pitch.Add(new Pitch()
-            {
-                Nombre = pitchname,
-                Hubicacion = pitch.Hubicacion,
-                Horario = pitch.Horario,
-                Canchas = pitch.Canchas,
-                Telefono = pitch.Telefono
-            });
-            _context.SaveChanges();
-            string lastPitch = _context.Pitch.OrderBy(x=>x.Nombre).Last().ToString();
-            return lastPitch;
-        }
-        public void DeletePitchByName(string pitchname)
-        {
-            _context.Pitch.Remove(_context.Pitch.Single(x=> x.Nombre == pitchname));
+            _context.Pitch.Remove(_context.Pitch.Single(x=> x.Id == id));
             _context.SaveChanges();
         }
 
-        public void UpdatePithInfo(string PitchName, PitchViewModel pitch)
+        public void UpdatePithInfo(int id, PitchViewModel pitch)
         {
-            Pitch? NamePitch = _context.Pitch.FirstOrDefault(x => x.Nombre == PitchName);
-            NamePitch.Telefono = pitch.Telefono;
-            NamePitch.Hubicacion = pitch.Hubicacion;
-            NamePitch.Canchas = pitch.Canchas;
+            Pitch? NamePitch = _context.Pitch.FirstOrDefault(x => x.Id == id);
+            NamePitch.Nombre = pitch.Nombre;
+            NamePitch.Ubicacion = pitch.Ubicacion;
+            NamePitch.Email = pitch.Email;
             NamePitch.Horario = pitch.Horario;
 
             _context.SaveChanges();
@@ -71,12 +49,17 @@ namespace Services.Service
             {
                 return "Turno no disponible";
             }
+            Pitch pitch = _context.Pitch.FirstOrDefault(p => p.Id == turns.IdPitch && (bool)p.IsBlocked);
+            if (pitch != null)
+            {
+                return "La cancha está bloqueada y no se puede reservar en este momento";
+            }
 
             _context.Turns.Add(new Turns()
             {
                 Dia = turns.Dia,
-                NameUser = turns.NameUser,
-                NamePitch = turns.NamePitch,
+                IdPitch = turns.IdPitch,
+                Descripcion = turns.Descripcion
             });
             _context.SaveChanges();
 

@@ -27,41 +27,76 @@ namespace Services.Service
             _appSetings = appSetting;
         }   
 
-        public string CreatUser(UserDTO User)
+        public string CreateUser(UserDTO User)
         {
             if (string.IsNullOrEmpty(User.Username))
             {
                 return "Ingrese usuario";
             }
-
+            Pitch? pitch = _context.Pitch.FirstOrDefault(x => x.Nombre == User.Username);
             Users? user = _context.Users.FirstOrDefault(x => x.Username == User.Username);
-            if (user != null)
+
+            if (pitch != null || user != null)
             {
-                return "Usuario existente";
+                return "Nombre en uso";
             }
 
             _context.Users.Add(new Users()
             {
+                Id = User.Id,
                 Username = User.Username,
-                Email = User.Email,
                 Userpassword = User.Userpassword,
-                Role = User.Role,               
+                Email = User.Email
             });
             _context.SaveChanges();
 
             string response = GetToken(_context.Users.OrderBy(x => x.Id).Last());
             return response;
-        }   
-
-        public string Login(AuthenticateViewModel User)
+        }
+        public string CreatePitch(PitchDTO Pitch)
         {
-            Users? user = _context.Users.FirstOrDefault(x => x.Username == User.Username && x.Userpassword == User.Password);
-            if (user == null)
+            if (string.IsNullOrEmpty(Pitch.Nombre))
             {
-                return string.Empty;
+                return "Ingrese el nombre Cancha";
             }
 
-            return GetToken(user);
+            Users? user = _context.Users.FirstOrDefault(x => x.Username == Pitch.Nombre);
+            Pitch? pitch = _context.Pitch.FirstOrDefault(x => x.Nombre == Pitch.Nombre);
+            if (pitch != null || user != null)
+            {
+                return "Nombre en uso";
+            }
+
+            _context.Pitch.Add(new Pitch()
+            {
+                Id = Pitch.Id,
+                Nombre = Pitch.Nombre,
+                Password = Pitch.Password,
+                Email = Pitch.Email,
+                Horario = Pitch.Horario,
+                Ubicacion = Pitch.Ubicacion,
+                IsBlocked = false
+            });
+            _context.SaveChanges();
+
+            string response = GetToken(_context.Pitch.OrderBy(x => x.Id).Last());
+            return response;
+        }
+        public string Login(AuthenticateViewModel User)
+        {
+            Users? user = _context.Users.FirstOrDefault(x => x.Username == User.name && x.Userpassword == User.Password);
+            if (user != null)
+            {
+                return GetToken(user);
+            }
+
+            Pitch? pitch = _context.Pitch.FirstOrDefault(x=>x.Nombre == User.name && x.Password == User.Password);
+            if (pitch != null)
+            {
+                return GetToken(pitch);
+            }
+
+            return string.Empty;
 
         }
 
@@ -75,6 +110,26 @@ namespace Services.Service
             claimsForToken.Add(new Claim("given_name", user.Username));
             claimsForToken.Add(new Claim("email", user.Email));
             claimsForToken.Add(new Claim("role", user.Role.ToString()));
+
+            var Sectoken = new JwtSecurityToken(_appSetings["AppSettings:Issuer"],
+              _appSetings["AppSettings:Issuer"],
+              claimsForToken,
+              expires: DateTime.Now.AddMinutes(120),
+              signingCredentials: credentials);
+
+            var token = new JwtSecurityTokenHandler().WriteToken(Sectoken);
+            return token;
+        }
+        private string GetToken(Pitch pitch)
+        {
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_appSetings["AppSettings:Key"]));
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+            var claimsForToken = new List<Claim>();
+            claimsForToken.Add(new Claim("userId", pitch.Id.ToString()));
+            claimsForToken.Add(new Claim("given_name", pitch.Nombre));
+            claimsForToken.Add(new Claim("email", pitch.Email));
+            claimsForToken.Add(new Claim("roles", pitch.Role.ToString()));
 
             var Sectoken = new JwtSecurityToken(_appSetings["AppSettings:Issuer"],
               _appSetings["AppSettings:Issuer"],

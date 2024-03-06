@@ -17,7 +17,7 @@ namespace Services.Mapping.Profiles
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id));
 
             CreateMap<List<Turns>, List<TurnsDTO>>()
-                .ConvertUsing(src => src.Select(e => new TurnsDTO { Id = e.Id, NamePitch = e.NamePitch, NameUser = e.NameUser, Dia = (DateTime)e.Dia }).ToList());
+                .ConvertUsing(src => src.Select(e => new TurnsDTO { Id = e.Id, IdPitch = e.IdPitch, IdUser = e.IdUser, Dia = (DateTime)e.Dia, Descripcion = e.Descripcion }).ToList());
 
             CreateMap<TurnsDTO, Turns>();
 

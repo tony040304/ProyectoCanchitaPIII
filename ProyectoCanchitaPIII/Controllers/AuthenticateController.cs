@@ -31,7 +31,7 @@ namespace ProyectoCanchitaPIII.Controllers
                 response = _services.Login(User);
                 if (string.IsNullOrEmpty(response))
                 {
-                    return NotFound("username o contraseña incorrecta");
+                    return NotFound("nombre o contraseña incorrecta");
                 }
 
             }
@@ -42,14 +42,14 @@ namespace ProyectoCanchitaPIII.Controllers
             }
             return Ok(response);
         }
-        [HttpPost("Sing up")]
+        [HttpPost("SingUpUser")]
         public ActionResult<string> CreatUser([FromBody] UserDTO User)
         {
             string response = string.Empty;
             try
             {
-                response = _services.CreatUser(User);
-                if (response == "Ingrese un usuario" || response == "Usuario existente")
+                response = _services.CreateUser(User);
+                if (response == "Ingrese un usuario" || response == "Nombre en uso")
                     return BadRequest(response);
                 
             }
@@ -59,7 +59,25 @@ namespace ProyectoCanchitaPIII.Controllers
                 return BadRequest($"{ex.Message}");
             }
             return Ok(response);
-    }
+        }
+        [HttpPost("SingUpPitch")]
+        public ActionResult<string> CreatPitch([FromBody] PitchDTO Pitch)
+        {
+            string response = string.Empty;
+            try
+            {
+                response = _services.CreatePitch(Pitch);
+                if (response == "Ingrese el nombre Cancha" || response == "Nombre en uso")
+                    return BadRequest(response);
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("CrearUsuario", ex);
+                return BadRequest($"{ex.Message}");
+            }
+            return Ok(response);
+        }
     }
 
     

@@ -11,8 +11,8 @@ namespace Services.IServices
     public interface IUsersService
     {
         List<PitchTurnsDTO> GetListPitch(DateTime date);
-        void DeleteUser(string username);
+        void DeleteUser(int id);
         string ReserveTurn(TurnsDTO turns);
-        void ChangePasword(string username, UserViewModel user);
+        void ChangePasword(int id, UserViewModel user);
     }
 }

@@ -8,11 +8,11 @@ namespace Models.DTO
 {
     public class PitchTurnsDTO
     {
-        public string Horario { get; set; }
-        public string Canchas { get; set; }
-        public string Hubicacion { get; set; }
-        public int? Telefono { get; set; }
+        public int Id { get; set; }
         public string Nombre { get; set; }
+        public string Email { get; set; }
+        public string Horario { get; set; }
+        public string Ubicacion { get; set; }
 
     }
 }

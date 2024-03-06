@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Models.DTO;
+using Models.ViewModel;
 using Services.IServices;
 using Services.Service;
 
@@ -26,11 +27,11 @@ namespace ProyectoCanchitaPIII.Controllers
         }
 
         [HttpDelete("DeletePitch")]
-        public ActionResult DeletePitchByName([FromQuery] string pitchname)
+        public ActionResult DeletePitchByName([FromQuery] int id)
         {
             try
             {
-                _canchitaServices.DeletePitchByName(pitchname);
+                _canchitaServices.DeletePitchByName(id);
                 return Ok("Cancha borrada");
             }
             catch (Exception ex)
@@ -39,11 +40,11 @@ namespace ProyectoCanchitaPIII.Controllers
             }
         }
         [HttpDelete("DeleteUser")]
-        public ActionResult DeleteUser([FromQuery] string username)
+        public ActionResult DeleteUser([FromQuery] int id)
         {
             try
             {
-                _usersService.DeleteUser(username);
+                _usersService.DeleteUser(id);
                 return Ok();
             }
             catch (Exception ex)
@@ -67,32 +68,14 @@ namespace ProyectoCanchitaPIII.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [HttpPost("BlockPitch")]
-        public ActionResult<string> BlockPitch([FromBody] BlockedPitchDTO blockedPitch)
-        {
-            string response = string.Empty;
-            try
-            {
-                response = _adminServices.BlockPitch(blockedPitch);
-                if(response == "Cancha bloqueada")
-                {
-                    return BadRequest();
-                }
-                return Ok("Cancha bloqueada");
-            }
-            catch(Exception ex) 
-            {
-                return BadRequest($"{ex.Message}");
-            }
-
-        }
-        [HttpDelete("UnlockPitch")]
-        public ActionResult UnlockPitch(int blockedPitchId)
+        
+        [HttpPut("UnlockPitch")]
+        public ActionResult UnlockPitch(int Id, BlockViewModel block)
         {
             try
             {
-                _adminServices.UnlockPitch(blockedPitchId);
-                return Ok("Borrado correctamente");
+                _adminServices.UnlockPitch(Id, block);
+                return Ok("Actualizado correctamente");
             }
             catch(Exception ex)
             {
@@ -100,17 +83,18 @@ namespace ProyectoCanchitaPIII.Controllers
             }
         }
         [HttpGet("GetBlockedPitchList")]
-        public ActionResult<BlockedPitchDTO> GetBlockedPitchList()
+        public ActionResult<PitchDTO> GetBlockedPitchList()
         {
             try
             {
                 var response = _adminServices.GetBlockedPitchList();
                 if (response.Count == 0)
                 {
-                    return NotFound("No hay canchas bloqueadas");
+                    return NotFound("no hay canchas bloqueadas");
                 }
                 return Ok(response);
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -149,12 +133,29 @@ namespace ProyectoCanchitaPIII.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [HttpGet("GetTurnList")]
-        public ActionResult<PitchDTO> GetTurnList()
+        [HttpGet("GetTurnList/{pitchId}")]
+        public ActionResult<PitchDTO> GetTurnList(int pitchId)
         {
             try
             {
-                var response = _adminServices.GetTurnList();
+                var response = _adminServices.GetTurnList(pitchId);
+                if (response.Count == 0)
+                {
+                    return NotFound("No hay turnos registrados");
+                }
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpGet("GetTurnListUser/{userId}")]
+        public ActionResult<PitchDTO> GetTurnListUser(int userId)
+        {
+            try
+            {
+                var response = _adminServices.GetTurnListUser(userId);
                 if (response.Count == 0)
                 {
                     return NotFound("No hay turnos registrados");

@@ -22,12 +22,12 @@ namespace ProyectoCanchitaPIII.Controllers
             _turnServices = turnServices;
         }
 
-        [HttpGet("GetListTurns/{username}")]
-        public ActionResult<List<UserTurnsDTO>> GetTurnsById(string username)
+        [HttpGet("GetListTurns/{id}")]
+        public ActionResult<List<UserTurnsDTO>> GetTurnsById(int id)
         {
             try
             {
-                var response = _turnServices.GetTurnsById(username);
+                var response = _turnServices.GetTurnsById(id);
                 if (response == null)
                 {
                     NotFound("No hay reservas");
@@ -58,17 +58,17 @@ namespace ProyectoCanchitaPIII.Controllers
             }
         }
         [HttpDelete("DeleteUser")]
-        public ActionResult DeleteUser([FromQuery] string username)
+        public ActionResult DeleteUser([FromQuery] int id)
         {
             try
             {
-                _usersService.DeleteUser(username);
+                _usersService.DeleteUser(id);
                 return Ok();
             }
             catch (Exception ex)
             {
 
-                return BadRequest(ex.Message);
+                return BadRequest($"Tiene turno reservado, no puede puede borrar este usuario");
             }
         }
 
@@ -79,7 +79,7 @@ namespace ProyectoCanchitaPIII.Controllers
             try
             {
                 response = _usersService.ReserveTurn(turns);
-                if (response == "Turno no disponible")
+                if (response == "Turno no disponible" || response == "Cancha bloqueada" || response == "La cancha está bloqueada y no se puede reservar en este momento")
                 {
                     return BadRequest(response);
                 }
@@ -88,7 +88,7 @@ namespace ProyectoCanchitaPIII.Controllers
             {
                 return BadRequest(ex.Message);
             }
-            return Ok("Turno resrvado");
+            return Ok("Turno reservado");
         }
 
         [HttpDelete("Deleteturn")]
@@ -105,12 +105,12 @@ namespace ProyectoCanchitaPIII.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [HttpPut("ChangePasswords/{username}")]
-        public ActionResult ChangePasword(string username,[FromBody] UserViewModel user)
+        [HttpPut("ChangePasswords/{id}")]
+        public ActionResult ChangePasword(int id,[FromBody] UserViewModel user)
         {
             try
             {
-                _usersService.ChangePasword(username, user);
+                _usersService.ChangePasword(id, user);
                 return Ok("Contraseña cambiada");   
             }catch (Exception ex)
             {

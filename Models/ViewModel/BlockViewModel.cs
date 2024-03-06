@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace Models.ViewModel
 {
-    public class AuthenticateViewModel
+    public class BlockViewModel
     {
-        public string name { get; set; } = string.Empty;
-        public string Password { get; set; } = string.Empty;
+        public Boolean isBlocked { get; set; }
     }
 }
