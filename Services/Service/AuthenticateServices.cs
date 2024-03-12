@@ -40,6 +40,13 @@ namespace Services.Service
             {
                 return "Nombre en uso";
             }
+            Pitch? pitchMail = _context.Pitch.FirstOrDefault(x => x.Email == User.Email);
+            Users? userMail = _context.Users.FirstOrDefault(x => x.Email == User.Email);
+
+            if (pitchMail != null || userMail != null)
+            {
+                return "Email en uso";
+            }
 
             _context.Users.Add(new Users()
             {
@@ -65,6 +72,14 @@ namespace Services.Service
             if (pitch != null || user != null)
             {
                 return "Nombre en uso";
+            }
+
+            Pitch? pitchMail = _context.Pitch.FirstOrDefault(x => x.Email == Pitch.Email);
+            Users? userMail = _context.Users.FirstOrDefault(x => x.Email == Pitch.Email);
+
+            if (pitchMail != null || userMail != null)
+            {
+                return "Email en uso";
             }
 
             _context.Pitch.Add(new Pitch()

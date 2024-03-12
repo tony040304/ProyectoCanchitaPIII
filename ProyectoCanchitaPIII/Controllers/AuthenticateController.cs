@@ -49,7 +49,7 @@ namespace ProyectoCanchitaPIII.Controllers
             try
             {
                 response = _services.CreateUser(User);
-                if (response == "Ingrese un usuario" || response == "Nombre en uso")
+                if (response == "Ingrese un usuario" || response == "Nombre en uso" || response == "Email en uso")
                     return BadRequest(response);
                 
             }
@@ -67,7 +67,7 @@ namespace ProyectoCanchitaPIII.Controllers
             try
             {
                 response = _services.CreatePitch(Pitch);
-                if (response == "Ingrese el nombre Cancha" || response == "Nombre en uso")
+                if (response == "Ingrese el nombre Cancha" || response == "Nombre en uso" || response == "Email en uso")
                     return BadRequest(response);
 
             }

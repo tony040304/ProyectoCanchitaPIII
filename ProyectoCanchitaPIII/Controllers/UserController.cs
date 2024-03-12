@@ -28,7 +28,7 @@ namespace ProyectoCanchitaPIII.Controllers
             try
             {
                 var response = _turnServices.GetTurnsById(id);
-                if (response == null)
+                if (response.Count == 0) 
                 {
                     NotFound("No hay reservas");
                 }
@@ -43,6 +43,7 @@ namespace ProyectoCanchitaPIII.Controllers
         [HttpGet("GetListOfavailablePitchs/{date}")]
         public ActionResult<List<PitchDTO>> GetListPitch(DateTime date)
         {
+
             try
             {
                 var response = _usersService.GetListPitch(date);
